@@ -61,3 +61,11 @@ export const isForbidden = (status : number | undefined) => {
 export const isUnprocessableEntity = (status: number | undefined) => {
   return status !== undefined && status === 422;
 }
+
+export const isInvalidCredentialsError = (e: any): boolean => {
+  const status = e?.response?.request?.status;
+  if(status && (status === 400)) {
+    return true;
+  }
+  return false;
+}

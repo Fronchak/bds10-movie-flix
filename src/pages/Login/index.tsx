@@ -1,54 +1,44 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Form, useSubmit, ActionFunctionArgs, useActionData, redirect, useNavigation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import HomeImage from '../../assets/imgs/home-banner.svg';
 import { LoginForm } from '../../types/domain/LoginForm';
-import { requestBackendLogin } from '../../util/request';
+import { isInvalidCredentialsError, requestBackendLogin } from '../../util/request';
 import { saveAuthData } from '../../util/storage';
+import HomeImage from '../../assets/imgs/home-banner.svg';
+
 import './styles.css';
 
-export const action = async({ request }: ActionFunctionArgs) => {
-  try {
-    const formData = await request.formData();
-    const loginForm = Object.fromEntries(formData) as LoginForm;
-    const response = await requestBackendLogin(loginForm);
-    saveAuthData(response.data);
-    toast.success('Logado com sucesso');
-    return redirect('/movies');
-  }
-  catch(e) {
-    let error = e as any;
-    const status = error?.response?.request?.status as number | undefined;
-
-    if(status && status === 400) {
-      return {
-        error: 'Usuário ou senha inválidos'
-      }
-    }
-
-    throw e;
-  }
-
-}
-
-type ActionData = {
-  error: string;
-}
 
 const Login = () => {
 
+  const [error, setError] = useState<string>();
+  const [isLoading, setIsloading] = useState<boolean>(false);
   const [wasSubmit, setWasSubmit] = useState<boolean>(false);
   const { register, handleSubmit, formState: { errors } } = useForm<LoginForm>();
-  const submit = useSubmit();
-  const actionData = useActionData() as ActionData | undefined;
-  const error = actionData ? actionData.error : undefined;
-  const navigation = useNavigation();
+  const navigate = useNavigate();
 
-  const onSubmit = () => {
-    console.log('onSubmit');
-    const form = document.getElementById('login-form') as HTMLFormElement;;
-    submit(form);
+  const onSubmit = (loginForm: LoginForm) => {
+    console.log('loginForm', loginForm);
+    setIsloading(true);
+    requestBackendLogin(loginForm)
+      .then((response) => {
+        saveAuthData(response.data);
+        toast.success('Login with success');
+      })
+      .catch((e) => {
+        console.log(e);
+        toast.error('Error in login');
+        setWasSubmit(false);
+        if(isInvalidCredentialsError(e)) {
+          setError('Usuário ou senha inválidos');
+        }
+        else {
+          setError('Erro inesperado no login, por favor, tente novamente');
+        }
+      })
+      .finally(() => setIsloading(false));
+
   }
 
   return (
@@ -70,7 +60,7 @@ const Login = () => {
               </div>
 
             )}
-            <Form method='post' onSubmit={handleSubmit(onSubmit)} id="login-form">
+            <form onSubmit={handleSubmit(onSubmit)} id="login-form">
               <div className="mb-3">
                 <input
                   { ...register('username', {
@@ -110,13 +100,13 @@ const Login = () => {
                 </div>
               </div>
               <button className="btn base-btn" type="submit" onClick={() => setWasSubmit(true)}>Fazer login
-              { navigation.state === 'loading' && (
+              { isLoading && (
                 <div className="ms-2 spinner-border spinner-border-sm" role="status">
                   <span className="visually-hidden">Loading...</span>
                 </div>
               ) }
               </button>
-            </Form>
+            </form>
           </div>
         </div>
       </div>
