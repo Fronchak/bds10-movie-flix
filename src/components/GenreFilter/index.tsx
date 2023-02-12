@@ -34,13 +34,15 @@ const GenreFilter = ({ onSelectChange }: Props) => {
   }
 
   return (
-    <Select
-    isClearable
-    classNamePrefix="genre-select"
-    className="form-control"
-    options={ options() }
-    onChange={(selectValue) => onSelectChange(selectValue ? selectValue.value : 0)}
-  />
+    <div id="div-select-container">
+      <Select
+        isClearable
+        classNamePrefix="genre-select"
+        className="form-control"
+        options={ options() }
+        onChange={(selectValue) => onSelectChange(selectValue ? selectValue.value : 0)}
+      />
+    </div>
   );
 }
 

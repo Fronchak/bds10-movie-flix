@@ -10,6 +10,7 @@ import Root from './pages/Root';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Movies from './pages/Movies';
+import MoviePage from './pages/MoviePage';
 
 const route = createBrowserRouter(
   createRoutesFromElements(
@@ -18,14 +19,9 @@ const route = createBrowserRouter(
       element={ <Root /> }
       errorElement={ <DefaultErrorPage /> }
     >
-      <Route
-        index
-        element={ <Login /> }
-      />
-      <Route
-        path="/movies"
-        element={ <Movies /> }
-      />
+      <Route index element={ <Login /> } />
+      <Route path="/movies" element={ <Movies /> }/>
+      <Route path="/movies/:id" element={ <MoviePage /> } />
     </Route>
   )
 )

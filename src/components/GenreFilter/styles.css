@@ -1,6 +1,9 @@
+#div-select-container {
+  max-width: 280px;
+}
+
 .form-control {
   height: 100%;
-  max-width: 280px;
 
 }
 

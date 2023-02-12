@@ -25,6 +25,7 @@ const Login = () => {
       .then((response) => {
         saveAuthData(response.data);
         toast.success('Login with success');
+        navigate('movies');
       })
       .catch((e) => {
         console.log(e);
