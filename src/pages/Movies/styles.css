@@ -1,3 +1,17 @@
 .movie-card-container .card {
   cursor: pointer;
 }
+
+
+
+#select-container .form-control {
+  background-color: var(--secondary-color);
+  border: none;
+  height: 60px;
+}
+
+@media (min-width: 576px) {
+  #select-container {
+    padding-left: 20px;
+  }
+}

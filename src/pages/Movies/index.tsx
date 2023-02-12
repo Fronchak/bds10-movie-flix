@@ -75,12 +75,14 @@ const Movies = () => {
   }
 
   return (
-    <div className="container-xl py-3">
+    <div className="container-xl py-3" id="movies-page-container">
       <div className="row mb-4">
         <div className="col-12">
-          <GenreFilter
-            onSelectChange={handleSelectChange}
-          />
+          <div className="base-card" id="select-container">
+            <GenreFilter
+              onSelectChange={handleSelectChange}
+            />
+          </div>
         </div>
       </div>
       { isLoading ? (

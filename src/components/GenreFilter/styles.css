@@ -1,0 +1,53 @@
+.form-control {
+  height: 100%;
+  max-width: 280px;
+
+}
+
+.form-control:focus {
+  box-shadow: none;
+}
+
+.genre-select__control {
+  height: 100%;
+  background-color: var(--secondary-color);
+  color: #FFF;
+}
+
+#react-select-7-placeholder {
+  color: #FFF;
+}
+
+.genre-select__control::placeholder {
+  color: #FFF;
+}
+
+.genre-select__single-value {
+  color: #FFF;
+}
+
+.genre-select__control:focus,
+.genre-select__control:active,
+.genre-select__control:hover {
+  box-shadow: none;
+  outline: none;
+
+}
+
+.genre-select__control--is-focused,
+.genre-select__control--is-focused:hover {
+  border-color: #FFF;
+  box-shadow: none;
+}
+
+.genre-select__indicator-separator {
+  display: none;
+}
+
+#react-select-7-input {
+  background-color: red;
+}
+
+.genre-select__control svg {
+  color: #FFF;
+}

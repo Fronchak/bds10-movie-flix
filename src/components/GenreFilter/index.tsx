@@ -3,7 +3,8 @@ import { useEffect, useState } from "react"
 import { toast } from "react-toastify";
 import { GenreName } from "../../types/domain/GenreName"
 import { requestBackend } from "../../util/request";
-import Select from 'react-select'
+import Select from 'react-select';
+import './styles.css';
 
 type Props = {
   onSelectChange: (value: number) => void
@@ -35,7 +36,8 @@ const GenreFilter = ({ onSelectChange }: Props) => {
   return (
     <Select
     isClearable
-    className="form-select"
+    classNamePrefix="genre-select"
+    className="form-control"
     options={ options() }
     onChange={(selectValue) => onSelectChange(selectValue ? selectValue.value : 0)}
   />
