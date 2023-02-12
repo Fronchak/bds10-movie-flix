@@ -1,0 +1,35 @@
+#pagination-container ul {
+  list-style: none;
+  padding-left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.page-item {
+  background-color: var(--secondary-color);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  margin: 0 5px;
+  justify-content: center;
+  align-items: center;
+  color: #FFF;
+  text-decoration: none;
+  font-size: 1.2em;
+}
+
+#pagination-container i {
+  font-size: 1.8em;
+  color: var(--primary-color);
+}
+
+#pagination-container .active-page {
+  background-color: var(--primary-color);
+}
+
+#pagination-container li.inactive-arrow i {
+  color: var(--third-color);
+  cursor: default;
+}
