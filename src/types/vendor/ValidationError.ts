@@ -2,7 +2,7 @@ export type ValidationError = {
   status: number;
   error: string;
   message: string;
-  errors: FieldError[];
+  errors?: FieldError[];
 }
 
 type FieldError = {

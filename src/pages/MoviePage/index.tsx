@@ -1,25 +1,17 @@
 import { AxiosRequestConfig } from 'axios';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import {
-  LoaderFunctionArgs,
-  ActionFunctionArgs,
-  useLoaderData,
-  Form,
-  useSubmit,
-  redirect,
-  useNavigation,
-  useActionData,
-  useParams
-} from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import MovieDetailsCard from '../../components/MovieDetailsCard';
 import ReviewComponent from '../../components/ReviewComponent';
+import AnimeDetailsLoader from '../../loaders/AnimeDetailsLoader';
+import ReviewsLoader from '../../loaders/ReviewsLoader';
 import { Movie } from '../../types/domain/Movie';
 import { Review } from '../../types/domain/Review';
 import { ValidationError } from '../../types/vendor/ValidationError';
 import { hasAnyRole, isAuthenticated } from '../../util/auth';
-import { getResponseStatusFromErrorRequest, isUnauthorized, requestBackend } from '../../util/request';
+import { getResponseStatusFromErrorRequest, isUnauthorized, isValidationError, requestBackend } from '../../util/request';
 import './styles.css';
 
 
@@ -32,9 +24,11 @@ const MoviePage = () => {
   const { id } = useParams();
   const [movie, setMovie] = useState<Movie>();
   const [reviews, setReviews] = useState<Review[]>([]);
+  const [serverError, setServerError] = useState<ValidationError | null>(null);
   const [ wasSubmit, setWasSubmit ] = useState<boolean>();
   const [isLoadingMovie, setIsLoadingMovie] = useState<boolean>(false);
   const [isLoadingReviews, setIsLoadingReviews] = useState<boolean>(false);
+  const [isSavingNewReview, setIsSavingNewReview] = useState<boolean>(false);
 
   const { register, handleSubmit, setValue, formState: { errors } } = useForm<ReviewForm>();
 
@@ -55,7 +49,7 @@ const MoviePage = () => {
       });
   }, [id]);
 
-  useEffect(() => {
+  const loadReviews = useCallback(() => {
     const config: AxiosRequestConfig = {
       method: 'get',
       url: `/movies/${ id }/reviews`,
@@ -72,16 +66,47 @@ const MoviePage = () => {
       })
   }, [id]);
 
+  useEffect(() => {
+    loadReviews();
+  }, [loadReviews]);
+
 
   const onSubmit = (data: ReviewForm) => {
     console.log('data', data);
+    const config: AxiosRequestConfig = {
+      method: 'post',
+      url: `/reviews`,
+      withCredentials: true,
+      data: {
+        ...data,
+        movieId: id
+      }
+    }
+    setIsSavingNewReview(true);
+    requestBackend(config)
+      .then(() => {
+        setValue('text', '');
+        setWasSubmit(false);
+        toast.success('Review register with success');
+        loadReviews();
+      })
+      .catch((e) => {
+        const [isInvalidData, error] = isValidationError(e);
+        if(isInvalidData) {
+          setServerError(error);
+        }
+        toast.error('Error in saving review');
+      })
+      .finally(() => {
+        setIsSavingNewReview(false);
 
+      });
   }
 
   return (
     <div className="container py-3" id="movie-page-container">
       { isLoadingMovie ? (
-        <h1>Loading  movie ...</h1>
+        <AnimeDetailsLoader />
       ) : (
         movie && <MovieDetailsCard movie={movie} />
       ) }
@@ -106,7 +131,14 @@ const MoviePage = () => {
             defaultValue={''}
             className={`form-control ${ wasSubmit ? errors.text ? 'is-invalid' : 'is-valid' : '' }`}
             />
-
+            { serverError?.errors?.map((err) => (
+              <div className="invalid-feedback d-block">
+                { err.message }
+              </div>
+            )) }
+            <div className="invalid-feedback d-block">
+              { errors.text?.message }
+            </div>
           </div>
           <div id="review-form-button-container">
             <button
@@ -114,7 +146,7 @@ const MoviePage = () => {
               type='submit'
               onClick={() => setWasSubmit(true)}
               >Salvar avaliação
-              { 1 && (
+              { isSavingNewReview && (
                 <div className="spinner-border spinner-border-sm mx-2" role="status">
                   <span className="visually-hidden">Loading...</span>
                 </div>
@@ -125,19 +157,27 @@ const MoviePage = () => {
       </div>
       ) }
 
-      { !isLoadingReviews && reviews.length > 0 ? (
+      { isLoadingReviews ? (
         <div className="px-3 mt-3 pb-3 pt-1 base-card">
-          { reviews.map((review) => (
-            <div className="mb-1" key={review.id}>
-              <ReviewComponent review={review} />
-            </div>
-          )) }
+          <ReviewsLoader />
         </div>
       ) : (
-        <div className="p-3 mt-3 base-card">
-          <p className="mb-0 fs-4">Esse filme ainda não possui nenhuma review</p>
-        </div>
+        reviews.length > 0 ? (
+          <div className="px-3 mt-3 pb-3 pt-1 base-card">
+            { reviews.map((review) => (
+              <div className="mb-1" key={review.id}>
+                <ReviewComponent review={review} />
+              </div>
+            )) }
+          </div>
+        ) : (
+          <div className="p-3 mt-3 base-card">
+            <p className="mb-0 fs-4">Esse filme ainda não possui nenhuma review</p>
+          </div>
+        )
       ) }
+
+
     </div>
   );
 }

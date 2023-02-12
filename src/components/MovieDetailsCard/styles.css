@@ -1,18 +1,14 @@
-#movie-details-card {
-  border-radius: 20px;
+#movie-details-container {
+  border-radius: 10px;
 }
 
-#movie-details-card img {
-  border-top-right-radius: 20px;
-  border-top-left-radius: 20px;
-}
+
 
 #synopsis-container {
   border-top: 1px solid var(--third-color);
 }
 
-@media (min-width: 768px) {
-  #movie-details-card img {
-    border-top-right-radius: 0px;
-  }
+#sinopse-container {
+  border: 1px solid var(--fifth-color);
+  border-radius: 10px;
 }

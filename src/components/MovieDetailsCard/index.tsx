@@ -8,23 +8,22 @@ type Props = {
 const MovieDetailsCard = ({ movie }: Props) => {
 
   return (
-    <div className="row m-0 base-card" id="movie-details-card">
-      <div className="col-12 col-md-6 p-0">
-        <img className="img-fluid w-100" src={ movie.imgUrl } />
-      </div>
-      <div className="col-12 col-md-6 p-3">
-        <h1>{movie.title}</h1>
-        { movie.subTitle && <h2>{ movie.subTitle }</h2> }
-        <p>Ano: { movie.year }</p>
-        <span>Gênero: </span>
-        <div className="alert alert-dark py-1 d-inline" role="alert">
-          { movie.genre.name }
+    <div id="movie-details-container" className="base-card p-3 p-lg-4">
+      <div className="row" id="movie-details-card">
+        <div className="col-12 col-xl-6" id="movie-image-container">
+          <img className="img-fluid w-100" src={ movie.imgUrl } />
         </div>
-      </div>
-      <div className="col-12 px-0 mt-md-4" id="synopsis-container">
-        <div className="p-3">
-          <h4 className="mb-4">Sinopse:</h4>
-          <p>{ movie.synopsis }</p>
+        <div className="col-12 col-xl-6 p-3 p-lg-4 pb-0 pb-lg-0">
+          <h1 className="fw-bold">{movie.title}</h1>
+          { movie.subTitle && <h2>{ movie.subTitle }</h2> }
+          <p className="primary-color fs-5 mb-1">{ movie.year }</p>
+          <span className="fs-5">Gênero: </span>
+          <div className="alert alert-dark py-1 d-inline fs-5" role="alert">
+            { movie.genre.name }
+          </div>
+          <div id="sinopse-container" className="p-2 mt-3">
+            { movie.synopsis }
+          </div>
         </div>
       </div>
     </div>

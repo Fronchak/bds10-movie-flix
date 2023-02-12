@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import qs from 'qs';
 import { LoginForm } from '../types/domain/LoginForm';
+import { ValidationError } from '../types/vendor/ValidationError';
 import { getAuthData } from './storage';
 
 const BASE_URL = 'http://localhost:8080';
@@ -60,6 +61,14 @@ export const isForbidden = (status : number | undefined) => {
 
 export const isUnprocessableEntity = (status: number | undefined) => {
   return status !== undefined && status === 422;
+}
+
+export const isValidationError = (e: any): [boolean, ValidationError | null] => {
+  const status = e?.response?.data?.status;
+  if(status && (status === 404 || status === 422)) {
+    return [true, e.response.data];
+  }
+  return [false, null];
 }
 
 export const isInvalidCredentialsError = (e: any): boolean => {
