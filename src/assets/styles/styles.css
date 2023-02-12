@@ -1,0 +1,67 @@
+/* VARIABLES */
+:root {
+  --primary-color: #FFC700;
+  --secondary-color: #6C6C6C;
+  --third-color: #9E9E9E;
+  --fourth-color: #F2F2F2;
+  --fifth-color: #E1E1E1;
+}
+
+/* GENERAL */
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  background-color: #525252;
+  color: #FFF;
+}
+
+.primary-color {
+  color: var(--primary-color);
+}
+
+.primary-bg-color {
+  background-color: var(--primary-color);
+}
+
+.secondary-bg-color {
+  background-color: var(--secondary-color);
+}
+
+.third-color {
+  color: var(--third-color);
+}
+
+.fourth-color {
+  color: var(--fourth-color);
+}
+
+.fifth-color {
+  color: var(--fifth-color);
+}
+
+.base-card {
+  background: var(--secondary-color);
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
+}
+
+.base-btn {
+  background-color: var(--primary-color);
+  width: 100%;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #000;
+  padding-top: 0.8em;
+  padding-bottom: 0.8em;
+}
+
+.base-btn:hover,
+.base-btn:focus,
+.base-btn:active {
+  background-color: var(--primary-color);
+  color: #000;
+}
+
+.form-control:focus {
+  box-shadow: none;
+}
