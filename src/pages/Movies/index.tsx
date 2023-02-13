@@ -1,19 +1,15 @@
 import { AxiosRequestConfig } from 'axios'
 import { useEffect, useState } from 'react';
-import { redirect, useLoaderData, useNavigate, useNavigation } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import MovieCard from '../../components/MovieCard';
-import { GenreName } from '../../types/domain/GenreName';
 import { MovieList } from '../../types/domain/MovieList';
 import { SpringPage } from '../../types/vendor/SpringPage';
-import Select from 'react-select'
-import { hasAnyRole, isAuthenticated } from '../../util/auth';
-import { getResponseStatusFromErrorRequest, isForbidden, isUnauthorized, requestBackend } from '../../util/request';
-import './styles.css';
-import { SingleValue } from 'react-select/dist/declarations/src';
+import { requestBackend } from '../../util/request';
 import AnimesLoader from '../../loaders/AnimesLoader';
 import GenreFilter from '../../components/GenreFilter';
 import Pagination from '../../components/Pagination';
+import './styles.css';
 
 type MovieFilter = {
   genreFilter: number;
@@ -31,7 +27,6 @@ const Movies = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log('use Effect que carrega os movies');
     const config: AxiosRequestConfig = {
       method: 'get',
       url: '/movies',
@@ -49,7 +44,6 @@ const Movies = () => {
       })
       .catch((e) => {
         toast.error('Erro inesperado');
-
       })
       .finally(() => setIsLoading(false));
   }, [movieFilter]);

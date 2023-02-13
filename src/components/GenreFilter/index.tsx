@@ -14,7 +14,6 @@ const GenreFilter = ({ onSelectChange }: Props) => {
   const [genres, setGenres] = useState<GenreName[]>([]);
 
   useEffect(() => {
-    console.log('Use effect que carrega os gêneros');
     const config: AxiosRequestConfig = {
       method: 'get',
       url: '/genres',

@@ -1,6 +1,6 @@
 import { ReactNode, useState } from "react"
 import AuthContext from "./context"
-import authData, { AuthContextData } from "./data";
+import { AuthContextData } from "./data";
 
 type Props = {
   children: ReactNode;

@@ -10,8 +10,8 @@ import ReviewsLoader from '../../loaders/ReviewsLoader';
 import { Movie } from '../../types/domain/Movie';
 import { Review } from '../../types/domain/Review';
 import { ValidationError } from '../../types/vendor/ValidationError';
-import { hasAnyRole, isAuthenticated } from '../../util/auth';
-import { getResponseStatusFromErrorRequest, isUnauthorized, isValidationError, requestBackend } from '../../util/request';
+import { hasAnyRole } from '../../util/auth';
+import { isValidationError, requestBackend } from '../../util/request';
 import './styles.css';
 
 
@@ -25,7 +25,7 @@ const MoviePage = () => {
   const [movie, setMovie] = useState<Movie>();
   const [reviews, setReviews] = useState<Review[]>([]);
   const [serverError, setServerError] = useState<ValidationError | null>(null);
-  const [ wasSubmit, setWasSubmit ] = useState<boolean>();
+  const [wasSubmit, setWasSubmit] = useState<boolean>();
   const [isLoadingMovie, setIsLoadingMovie] = useState<boolean>(false);
   const [isLoadingReviews, setIsLoadingReviews] = useState<boolean>(false);
   const [isSavingNewReview, setIsSavingNewReview] = useState<boolean>(false);
@@ -72,7 +72,6 @@ const MoviePage = () => {
 
 
   const onSubmit = (data: ReviewForm) => {
-    console.log('data', data);
     const config: AxiosRequestConfig = {
       method: 'post',
       url: `/reviews`,
@@ -99,7 +98,6 @@ const MoviePage = () => {
       })
       .finally(() => {
         setIsSavingNewReview(false);
-
       });
   }
 
@@ -110,8 +108,6 @@ const MoviePage = () => {
       ) : (
         movie && <MovieDetailsCard movie={movie} />
       ) }
-
-
       { hasAnyRole(['ROLE_MEMBER']) && (
       <div className="p-3 mt-3 base-card">
         <form onSubmit={handleSubmit(onSubmit)} id="review-form">
@@ -176,8 +172,6 @@ const MoviePage = () => {
           </div>
         )
       ) }
-
-
     </div>
   );
 }

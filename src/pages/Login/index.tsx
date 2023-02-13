@@ -6,10 +6,9 @@ import { LoginForm } from '../../types/domain/LoginForm';
 import { isInvalidCredentialsError, requestBackendLogin } from '../../util/request';
 import { saveAuthData } from '../../util/storage';
 import HomeImage from '../../assets/imgs/home-banner.svg';
-
-import './styles.css';
 import AuthContext, { AuthContextType } from '../../contexts/AuthProvider/context';
 import { getTokenData } from '../../util/auth';
+import './styles.css';
 
 
 const Login = () => {
@@ -22,7 +21,6 @@ const Login = () => {
   const { authContextData, setAuthContextData } = useContext<AuthContextType>(AuthContext);
 
   const onSubmit = (loginForm: LoginForm) => {
-    console.log('loginForm', loginForm);
     setIsloading(true);
     requestBackendLogin(loginForm)
       .then((response) => {
@@ -35,7 +33,6 @@ const Login = () => {
         navigate('movies');
       })
       .catch((e) => {
-        console.log(e);
         toast.error('Error in login');
         setWasSubmit(false);
         if(isInvalidCredentialsError(e)) {
@@ -46,7 +43,6 @@ const Login = () => {
         }
       })
       .finally(() => setIsloading(false));
-
   }
 
   return (
