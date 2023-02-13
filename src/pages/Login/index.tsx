@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -8,6 +8,8 @@ import { saveAuthData } from '../../util/storage';
 import HomeImage from '../../assets/imgs/home-banner.svg';
 
 import './styles.css';
+import AuthContext, { AuthContextType } from '../../contexts/AuthProvider/context';
+import { getTokenData } from '../../util/auth';
 
 
 const Login = () => {
@@ -17,6 +19,7 @@ const Login = () => {
   const [wasSubmit, setWasSubmit] = useState<boolean>(false);
   const { register, handleSubmit, formState: { errors } } = useForm<LoginForm>();
   const navigate = useNavigate();
+  const { authContextData, setAuthContextData } = useContext<AuthContextType>(AuthContext);
 
   const onSubmit = (loginForm: LoginForm) => {
     console.log('loginForm', loginForm);
@@ -24,6 +27,10 @@ const Login = () => {
     requestBackendLogin(loginForm)
       .then((response) => {
         saveAuthData(response.data);
+        setAuthContextData({
+          authenticated: true,
+          tokenData: getTokenData()
+        });
         toast.success('Login with success');
         navigate('movies');
       })

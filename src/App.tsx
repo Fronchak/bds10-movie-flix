@@ -11,6 +11,9 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Movies from './pages/Movies';
 import MoviePage from './pages/MoviePage';
+import AuthContext from './contexts/AuthProvider/context';
+import AuthProvider from './contexts/AuthProvider';
+import PrivateRoutes from './components/PrivateRoutes';
 
 const route = createBrowserRouter(
   createRoutesFromElements(
@@ -20,8 +23,12 @@ const route = createBrowserRouter(
       errorElement={ <DefaultErrorPage /> }
     >
       <Route index element={ <Login /> } />
-      <Route path="/movies" element={ <Movies /> }/>
-      <Route path="/movies/:id" element={ <MoviePage /> } />
+      <Route
+        element={ <PrivateRoutes roles={[]} /> }
+      >
+        <Route path="/movies" element={ <Movies /> }/>
+        <Route path="/movies/:id" element={ <MoviePage /> } />
+      </Route>
     </Route>
   )
 )
@@ -29,14 +36,14 @@ const route = createBrowserRouter(
 const App = () => {
 
   return (
-    <>
+    <AuthProvider>
       <RouterProvider router={route} />
       <ToastContainer
         position='bottom-right'
         theme='dark'
         autoClose={ 3000 }
       />
-    </>
+    </AuthProvider>
   );
 }
 

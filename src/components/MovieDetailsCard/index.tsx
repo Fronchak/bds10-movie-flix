@@ -13,7 +13,7 @@ const MovieDetailsCard = ({ movie }: Props) => {
         <div className="col-12 col-xl-6" id="movie-image-container">
           <img className="img-fluid w-100" src={ movie.imgUrl } />
         </div>
-        <div className="col-12 col-xl-6 p-3 p-lg-4 pb-0 pb-lg-0">
+        <div className="col-12 col-xl-6 p-3 p-xl-4 pb-0 py-xl-0">
           <h1 className="fw-bold">{movie.title}</h1>
           { movie.subTitle && <h2>{ movie.subTitle }</h2> }
           <p className="primary-color fs-5 mb-1">{ movie.year }</p>
