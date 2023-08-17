@@ -1,8 +1,7 @@
 .movie-card-container .card {
   cursor: pointer;
+  height: 100%;
 }
-
-
 
 #select-container .form-control {
   background-color: var(--secondary-color);

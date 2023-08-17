@@ -34,7 +34,7 @@ const Movies = () => {
       params: {
         genreId: movieFilter.genreFilter,
         page: movieFilter.pageNumber,
-        size: 2
+        size: 4
       }
     }
     setIsLoading(true);
